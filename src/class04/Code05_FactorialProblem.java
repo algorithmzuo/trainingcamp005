@@ -1,6 +1,6 @@
 package class04;
 
-public class Code04_FactorialProblem {
+public class Code05_FactorialProblem {
 
 	public static int zeroNum1(int num) {
 		if (num < 0) {
