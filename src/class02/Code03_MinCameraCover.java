@@ -36,8 +36,8 @@ public class Code03_MinCameraCover {
 		
 		Info left = process1(X.left);
 		Info right = process1(X.right);
-		// x  uncovered
-		//  左孩子：  左孩子没被覆盖，左孩子以下的点都被覆盖
+		// x  uncovered  x自己不被覆盖，x下方所有节点，都被覆盖
+		//  左孩子： 左孩子没被覆盖，左孩子以下的点都被覆盖
 		//          左孩子被覆盖但没相机，左孩子以下的点都被覆盖
 		//          左孩子被覆盖也有相机，左孩子以下的点都被覆盖
 		long uncovered = left.coveredNoCamera + right.coveredNoCamera;
@@ -104,17 +104,18 @@ public class Code03_MinCameraCover {
 		}
 	}
 
-	public static Data process2(Node root) {
-		if (root == null) {
+	public static Data process2(Node X) {
+		if (X == null) {
 			return new Data(Status.COVERED_NO_CAMERA, 0);
 		}
-		Data left = process2(root.left);
-		Data right = process2(root.right);
+		Data left = process2(X.left);
+		Data right = process2(X.right);
 		int cameras = left.cameras + right.cameras;
-		// 
 		if (left.status == Status.UNCOVERED || right.status == Status.UNCOVERED) {
 			return new Data(Status.COVERED_HAS_CAMERA, cameras + 1);
 		}
+		
+		
 		// 左右孩子，不存在没被覆盖的情况
 		if (left.status == Status.COVERED_HAS_CAMERA 
 				|| 
