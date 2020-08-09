@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Code01_PalindromePairs {
 
+	//   [ [0,1]   [3, 8]        ]  
 	public static List<List<Integer>> palindromePairs(String[] words) {
 		HashMap<String, Integer> wordset = new HashMap<>();
 		for (int i = 0; i < words.length; i++) {

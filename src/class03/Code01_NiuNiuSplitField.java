@@ -6,7 +6,7 @@ public class Code01_NiuNiuSplitField {
 
 	// arr都是正数，0~i切的时候，怎么切最优，最优的结论生成一个数组返回
 	public static int[] getAnswers(int[] arr) {
-		if(arr == null || arr.length < 1) {
+		if (arr == null || arr.length < 1) {
 			return null;
 		}
 		// ans[i] 代表的含义：
@@ -14,11 +14,11 @@ public class Code01_NiuNiuSplitField {
 		int[] ans = new int[arr.length];
 		ans[0] = 0;
 		int best = 0;// 左 0..0 右 无
-		for(int i = 1; i < arr.length; i++) {
-			while(best < i-1 &&  getSplit(arr, best, i) <  getSplit(arr, best+1, i)  ) {
+		for (int i = 1; i < arr.length; i++) {
+			while (best < i - 1 && getSplit(arr, best, i) < getSplit(arr, best + 1, i)) {
 				best++;
 			}
-			ans[i] = getSplit(arr, best, i) ;
+			ans[i] = getSplit(arr, best, i);
 		}
 		return ans;
 	}
@@ -36,9 +36,9 @@ public class Code01_NiuNiuSplitField {
 		if (matrix == null || matrix.length < 4 || matrix[0].length < 4) {
 			return 0;
 		}
-		// record[i][j] 含义，左上角为(0,0) 右下角为(i,j)的子矩阵累加和是多少
+		// help[i][j] 含义，左上角为(0,0) 右下角为(i,j)的子矩阵累加和是多少
 		int[][] help = generateSumRecord(matrix);
-		// 通过record，得到任何子矩阵的累加和
+		// 通过help，得到任何子矩阵的累加和
 		int col = matrix[0].length;
 		int res = Integer.MIN_VALUE;
 		// 3个for循环在暴力枚举纵向三刀
@@ -67,23 +67,24 @@ public class Code01_NiuNiuSplitField {
 		}
 		for (int i = 1; i < row; i++) {
 			for (int j = 1; j < col; j++) {
-				record[i][j] = record[i][j - 1] + record[i - 1][j] - record[i - 1][j - 1] 
-						+ matrix[i][j];
+				record[i][j] = record[i][j - 1] + record[i - 1][j] - record[i - 1][j - 1] + matrix[i][j];
 			}
 		}
 		return record;
 	}
 
-	public static int getBestDicision(int[][] record, int c1, int c2, int c3) {
+	// 忘掉原来的矩阵，只使用help
+	// 竖着三刀固定，c1，c2，c3
+	// 所有横着切三刀的可能性中，那种切法能得到最好的结果，把结果返回
+	public static int getBestDicision(int[][] help, int c1, int c2, int c3) {
 		// 0～i 切一刀，出来八块，最优指标，up[i]
-		int[] up = getUpSplitArray(record, c1, c2, c3); // 0行~i行 切一刀，分8块，min max
-		
+		int[] up = getUpSplitArray(help, c1, c2, c3); // 0行~i行 切一刀，分8块，min max
+
 		// i ~ N-1 切一刀，出来八块，最优指标，down[i]
-		int[] down = getDownSplitArray(record, c1, c2, c3); // i~n-1 切一刀
-		
-		
+		int[] down = getDownSplitArray(help, c1, c2, c3); // i~n-1 切一刀
+
 		int res = Integer.MIN_VALUE;
-		for (int mid = 1; mid < record.length - 2; mid++) {
+		for (int mid = 1; mid < help.length - 2; mid++) {
 			res = Math.max(res, Math.min(up[mid], down[mid + 1]));
 		}
 		return res;

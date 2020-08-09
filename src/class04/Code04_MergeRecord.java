@@ -88,14 +88,16 @@ public class Code04_MergeRecord {
 		return ans;
 	}
 
-	public static void process(int[] originArr, int L, int R, int power, int[] record) {
+	// arr[L...R] 一共有2的power次方个数
+	// arr[0...7] 一共有2的3次方个数
+	public static void process(int[] arr, int L, int R, int power, int[] record) {
 		if (L == R) {
 			return;
 		}
 		int mid = L + ((R - L) >> 1);
-		process(originArr, L, mid, power - 1, record);
-		process(originArr, mid + 1, R, power - 1, record);
-		record[power] += merge(originArr, L, mid, R);
+		process(arr, L, mid, power - 1, record);
+		process(arr, mid + 1, R, power - 1, record);
+		record[power] += merge(arr, L, mid, R);
 	}
 
 	public static int merge(int[] arr, int L, int m, int r) {

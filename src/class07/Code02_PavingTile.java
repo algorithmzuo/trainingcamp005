@@ -40,9 +40,8 @@ public class Code02_PavingTile {
 		return dfs(op, 0, level, N);
 	}
 
-	// op 1位置上，不能选择，
-	// op[col] ==0 op[col+1]==0
-	//    00出现，前一个0可以摆横转
+	// op[i] == 0 可以考虑摆砖
+	// op[i] == 1 只能竖着向上
 	public static int dfs(int[] op, int col, int level, int N) {
 		 // 在列上自由发挥，玩深度优先遍历，当col来到终止列，i行的决定做完了
 		// 轮到i+1行，做决定
@@ -50,7 +49,9 @@ public class Code02_PavingTile {
 			return process(op, level + 1, N);
 		}
 		int ans = 0;
+		// col位置不横摆
 		ans += dfs(op, col + 1, level, N); // col位置上不摆横转
+		//  col位置横摆, 向右
 		if (col + 1 < op.length && op[col] == 0 && op[col + 1] == 0) {
 			op[col] = 1;
 			op[col + 1] = 1;

@@ -109,25 +109,19 @@ public class Code03_TarjanAndDisjointSetsForLCA {
 		
 		
 		// key 表示一个集合的代表节点
-		// value  这个key所在集合的所有节点，祖先是value
-		HashMap<Node, Node> ancestorMap = new HashMap<>();
-		
-		
-		
-		
-		
+		// value  这个key所在集合的所有节点，tag点
+		HashMap<Node, Node> tagMap = new HashMap<>();
 		UnionFindSet<Node> sets = new UnionFindSet<>(getAllNodes(head));
-		
-		
-		
-		
 		Node[] ans = new Node[quries.length];
 		// 提前填好无效问题的解，对于有效问题，生成好queryMap和indexMap
 		setQueriesAndSetEasyAnswers(quries, ans, queryMap, indexMap);
 		
-		
+		// 二叉树头节点head，遍历
+		// 并查集sets，打tag，还有tagMap表
+		// queryMap, indexMap可以方便的知道有哪些问题
+		// ans 知道答案了可以填写
 		// 递归遍历的过程中，把有效问题解决，填到答案里去
-		setAnswers(head, ans, queryMap, indexMap, ancestorMap, sets);
+		setAnswers(head, ans, queryMap, indexMap, tagMap, sets);
 		return ans;
 	}
 
@@ -173,19 +167,22 @@ public class Code03_TarjanAndDisjointSetsForLCA {
 		}
 	}
 
-	public static void setAnswers(Node head, Node[] ans,
+	public static void setAnswers(
+			Node head, 
+			Node[] ans,
 			HashMap<Node, LinkedList<Node>> queryMap,
 			HashMap<Node, LinkedList<Integer>> indexMap,
-			HashMap<Node, Node> ancestorMap, UnionFindSet<Node> sets) {
+			HashMap<Node, Node> tagMap, 
+			UnionFindSet<Node> sets) {
 		if (head == null) {
 			return;
 		}
-		setAnswers(head.left, ans, queryMap, indexMap, ancestorMap, sets);
+		setAnswers(head.left, ans, queryMap, indexMap, tagMap, sets);
 		sets.union(head.left, head);
-		ancestorMap.put(sets.findHead(head), head);
-		setAnswers(head.right, ans, queryMap, indexMap, ancestorMap, sets);
+		tagMap.put(sets.findHead(head), head);
+		setAnswers(head.right, ans, queryMap, indexMap, tagMap, sets);
 		sets.union(head.right, head);
-		ancestorMap.put(sets.findHead(head), head);
+		tagMap.put(sets.findHead(head), head);
 		// 处理有关于head的问题
 		LinkedList<Node> nList = queryMap.get(head);
 		LinkedList<Integer> iList = indexMap.get(head);
@@ -196,11 +193,11 @@ public class Code03_TarjanAndDisjointSetsForLCA {
 		// 7,8,9
 		// 7
 		while (nList != null && !nList.isEmpty()) {
-			node = nList.poll(); // head  o2
+			node = nList.poll(); // head  node
 			index = iList.poll(); // index
-			nodeFather = sets.findHead(node); // o2在集合中的代表节点
-			if (ancestorMap.containsKey(nodeFather)) { // o2所在的集合是否设置过祖先
-				ans[index] = ancestorMap.get(nodeFather);
+			nodeFather = sets.findHead(node); // node在集合中的代表节点
+			if (tagMap.containsKey(nodeFather)) { // node所在的集合是否设置过tag
+				ans[index] = tagMap.get(nodeFather);
 			}
 		}
 	}

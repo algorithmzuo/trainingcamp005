@@ -72,6 +72,26 @@ public class Code04_DistinctSubseq {
 		}
 		return all;
 	}
+	
+	public static int ketang(String s) {
+		if (s == null || s.length() == 0) {
+			return 0;
+		}
+		char[] str = s.toCharArray();
+		// a - z
+		// count[0] = a的统计
+		// ...
+		// count[25] = z的统计
+		int[] count = new int[26];
+		int all = 1; // 算空集
+		for(char x : str) {
+			int add = all - count[x - 'a'];
+			all += add;
+			count[x - 'a'] += add;
+		}
+		return all;
+	}
+	
 
 	public static String random(int len, int varible) {
 		int size = (int) (Math.random() * len) + 1;
