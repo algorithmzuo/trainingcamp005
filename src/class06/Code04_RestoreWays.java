@@ -103,13 +103,6 @@ public class Code04_RestoreWays {
 				for (int s = 0; s < 3; s++) {
 					if (arr[i] == 0 || v == arr[i]) {
 						if (s == 0 || s == 1) {
-							// A[i] = dp[i-1][0~v-1][0]
-							// A[0] = dp[i-1][0][0]
-							
-							
-							// dp[i-1][1~v-1][0]   A[v-1] - A[0]
-							// dp[i-1][v][1]
-							// dp[i-1][v+1~200][2]
 							for (int pre = 1; pre < 201; pre++) {
 								dp[i][v][s] += dp[i - 1][pre][pre < v ? 0 : (pre == v ? 1 : 2)];
 							}
@@ -145,9 +138,9 @@ public class Code04_RestoreWays {
 				dp[0][v][1] = 1;
 			}
 		}
-		// presum[0~V][0]  -> A
-		// presum[0~V][1]  -> B
-		// presum[0~V][2]  -> C
+		// presum[0~V][0] -> A
+		// presum[0~V][1] -> B
+		// presum[0~V][2] -> C
 		int[][] presum = new int[201][3];
 		// presum -> dp[0][..][..] 三张表
 		for (int v = 1; v < 201; v++) {
