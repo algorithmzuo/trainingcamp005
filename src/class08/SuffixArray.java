@@ -25,6 +25,7 @@ public class SuffixArray {
 
 		 // "abcfg"
 		// [ ahao, bhao, chao, fhao ]
+		// str N ,    max  256
 		public Suffix(String str, int max) {
 			MAXV = max;
 			n = str.length();

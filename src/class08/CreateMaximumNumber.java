@@ -11,7 +11,10 @@ public class CreateMaximumNumber {
 		int[] res = new int[k];
 		int[][] dp1 = getdp(nums1); // 生成dp1这个表，以后从nums1中，只要固定拿N个数，
 		int[][] dp2 = getdp(nums2);
+		
+		
 		for (int get1 = Math.max(0, k - len2); get1 <= Math.min(k, len1); get1++) {
+			// arr1 挑 get1个，怎么得到一个最优结果
 			int[] pick1 = maxPick(nums1, dp1, get1);
 			int[] pick2 = maxPick(nums2, dp2, k - get1);
 			int[] merge = merge(pick1, pick2);
@@ -51,6 +54,8 @@ public class CreateMaximumNumber {
 		// arr[i]认为是一个字符
 		// max arr中的最大值+1 >
 		// 别让arr中有0
+		// arr 中Value最大值
+		// arr 中不能有0这个值
 		public Suffix(int[] arr, int max) {
 			MAXN = max;
 			n = arr.length;
