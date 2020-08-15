@@ -17,6 +17,9 @@ public class Code02_StrangePrinter {
 		for (int i = N - 2; i >= 0; i--) {
 			for (int j = i + 2; j < N; j++) {
 				dp[i][j] = j - i + 1;
+				if (str[i] == str[j]) {
+					dp[i][j] = Math.min(dp[i][j], 1 + dp[i + 1][j - 1]);
+				}
 				for (int k = i + 1; k <= j; k++) {
 					dp[i][j] = Math.min(dp[i][j], dp[i][k - 1] + dp[k][j] - (str[i] == str[k] ? 1 : 0));
 				}
