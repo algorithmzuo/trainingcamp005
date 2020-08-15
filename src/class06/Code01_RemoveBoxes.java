@@ -8,28 +8,30 @@ public class Code01_RemoveBoxes {
 		return process(boxes, 0, N - 1, 0, dp);
 	}
 
-	public static int process(int[] boxes, int i, int j, int k, int[][][] dp) {
-		if (i > j) {
+	// boxes[L....R]，前面还跟着K个boxes[L]
+	// 前面的包袱和L...R所有的数都消掉，最好得分是什么
+	public static int process(int[] boxes, int L, int R, int K, int[][][] dp) {
+		if (L > R) {
 			return 0;
 		}
-		if (dp[i][j][k] != 0) {
-			return dp[i][j][k];
+		if (dp[L][R][K] != 0) {
+			return dp[L][R][K];
 		}
-		if (i == j) {
-			dp[i][j][k] = (k + 1) * (k + 1);
-			return dp[i][j][k];
+		if (L == R) {
+			dp[L][R][K] = (K + 1) * (K + 1);
+			return dp[L][R][K];
 		}
-		while (i < j && boxes[i] == boxes[i + 1]) {
-			i++;
-			k++;
+		while (L < R && boxes[L] == boxes[L + 1]) {
+			L++;
+			K++;
 		}
-		int ans = (k + 1) * (k + 1) + process(boxes, i + 1, j, 0, dp);
-		for (int m = i + 1; m <= j; m++) {
-			if (boxes[i] == boxes[m]) {
-				ans = Math.max(ans, process(boxes, i + 1, m - 1, 0, dp) + process(boxes, m, j, k + 1, dp));
+		int ans = (K + 1) * (K + 1) + process(boxes, L + 1, R, 0, dp);
+		for (int m = L + 1; m <= R; m++) {
+			if (boxes[L] == boxes[m]) {
+				ans = Math.max(ans, process(boxes, L + 1, m - 1, 0, dp) + process(boxes, m, R, K + 1, dp));
 			}
 		}
-		dp[i][j][k] = ans;
+		dp[L][R][K] = ans;
 		return ans;
 	}
 

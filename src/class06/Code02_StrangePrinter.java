@@ -14,14 +14,16 @@ public class Code02_StrangePrinter {
 			dp[i][i] = 1;
 			dp[i][i + 1] = str[i] == str[i + 1] ? 1 : 2;
 		}
-		for (int i = N - 2; i >= 0; i--) {
-			for (int j = i + 2; j < N; j++) {
-				dp[i][j] = j - i + 1;
-				if (str[i] == str[j]) {
-					dp[i][j] = Math.min(dp[i][j], 1 + dp[i + 1][j - 1]);
-				}
-				for (int k = i + 1; k <= j; k++) {
-					dp[i][j] = Math.min(dp[i][j], dp[i][k - 1] + dp[k][j] - (str[i] == str[k] ? 1 : 0));
+		for (int L = N - 3; L >= 0; L--) {
+			for (int R = L + 2; R < N; R++) {
+
+				// L....R
+
+				dp[L][R] = R - L + 1;
+
+				// L...k-1 k...R
+				for (int k = L + 1; k <= R; k++) {
+					dp[L][R] = Math.min(dp[L][R], dp[L][k - 1] + dp[k][R] - (str[L] == str[k] ? 1 : 0));
 				}
 			}
 		}
