@@ -153,7 +153,10 @@ public class Problem03_LFU {
 			}
 		}
 
-		public void set(int key, int value) {
+		public void put(int key, int value) {
+			if(capacity == 0) {
+				return;
+			}
 			if (records.containsKey(key)) {
 				Node node = records.get(key);
 				node.value = value;
