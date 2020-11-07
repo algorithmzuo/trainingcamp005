@@ -163,11 +163,11 @@ public class Code03_PostOfficeProblem {
 
 	// for test
 	public static void main(String[] args) {
-		int[] arr = { 3, 18, 105, 877, 987, 1003, 3788, 81828 };
-//		int num = 3;
-//		System.out.println(minDis1(arr, num));
-//		System.out.println(minDistances1(arr, num));
-//		System.out.println(minDistances2(arr, num));
+		int[] arr = { 1,3,8,10,12 };
+		int num = 3;
+		System.out.println(minDis1(arr, num));
+		System.out.println(minDistances1(arr, num));
+		System.out.println(minDistances2(arr, num));
 
 		int times = 100; // test time
 		int len = 1000; // test array length
