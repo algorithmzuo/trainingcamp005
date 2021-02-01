@@ -1,6 +1,6 @@
 package class08;
 
-public class InsertS2MakeMostAlphabeticalOrder {
+public class Code02_InsertS2MakeMostAlphabeticalOrder {
 
 	// 暴力方法
 	public static String right(String s1, String s2) {

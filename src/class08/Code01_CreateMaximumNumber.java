@@ -1,6 +1,6 @@
 package class08;
 
-public class CreateMaximumNumber {
+public class Code01_CreateMaximumNumber {
 
 	public static int[] maxNumber1(int[] nums1, int[] nums2, int k) {
 		int len1 = nums1.length;
