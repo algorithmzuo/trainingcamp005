@@ -53,7 +53,8 @@ public class Code02_InsertS2MakeMostAlphabeticalOrder {
 		for (int i = 0; i < M; i++) {
 			all[index++] = str2[i] - min + 2;
 		}
-		int[] rank = new DC3().rank(all, max - min + 2);
+		DC3 dc3 = new DC3(all, max - min + 2);
+		int[] rank = dc3.rank;
 		int comp = N + 1;
 		for (int i = 0; i < N; i++) {
 			if (rank[i] < rank[comp]) {
@@ -66,17 +67,15 @@ public class Code02_InsertS2MakeMostAlphabeticalOrder {
 
 	public static class DC3 {
 
-		public int[] rank(int[] nums, int max) {
-			int n = nums.length;
-			int[] sa = sa(nums, max);
-			int[] ans = new int[n];
-			for (int i = 0; i < n; i++) {
-				ans[sa[i]] = i + 1;
-			}
-			return ans;
+		public int[] sa;
+		public int[] rank;
+
+		public DC3(int[] nums, int max) {
+			sa = sa(nums, max);
+			rank = saToRank();
 		}
 
-		public int[] sa(int[] nums, int max) {
+		private int[] sa(int[] nums, int max) {
 			int n = nums.length;
 			int[] arr = new int[n + 3];
 			for (int i = 0; i < n; i++) {
@@ -174,6 +173,15 @@ public class Code02_InsertS2MakeMostAlphabeticalOrder {
 
 		private boolean leq(int a1, int a2, int a3, int b1, int b2, int b3) {
 			return a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3));
+		}
+
+		private int[] saToRank() {
+			int n = sa.length;
+			int[] ans = new int[n];
+			for (int i = 0; i < n; i++) {
+				ans[sa[i]] = i + 1;
+			}
+			return ans;
 		}
 
 	}

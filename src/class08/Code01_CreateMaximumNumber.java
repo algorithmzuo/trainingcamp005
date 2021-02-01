@@ -77,7 +77,8 @@ public class Code01_CreateMaximumNumber {
 		for (int j = 0; j < size2; j++) {
 			nums[j + size1 + 1] = nums2[j] + 2;
 		}
-		int[] rank = new DC3().rank(nums, 12);
+		DC3 dc3 = new DC3(nums, 11);
+		int[] rank = dc3.rank;
 		int[] ans = new int[size1 + size2];
 		int i = 0;
 		int j = 0;
@@ -96,17 +97,15 @@ public class Code01_CreateMaximumNumber {
 
 	public static class DC3 {
 
-		public int[] rank(int[] nums, int max) {
-			int n = nums.length;
-			int[] sa = sa(nums, max);
-			int[] ans = new int[n];
-			for (int i = 0; i < n; i++) {
-				ans[sa[i]] = i + 1;
-			}
-			return ans;
+		public int[] sa;
+		public int[] rank;
+
+		public DC3(int[] nums, int max) {
+			sa = sa(nums, max);
+			rank = saToRank();
 		}
 
-		public int[] sa(int[] nums, int max) {
+		private int[] sa(int[] nums, int max) {
 			int n = nums.length;
 			int[] arr = new int[n + 3];
 			for (int i = 0; i < n; i++) {
@@ -204,6 +203,15 @@ public class Code01_CreateMaximumNumber {
 
 		private boolean leq(int a1, int a2, int a3, int b1, int b2, int b3) {
 			return a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3));
+		}
+
+		private int[] saToRank() {
+			int n = sa.length;
+			int[] ans = new int[n];
+			for (int i = 0; i < n; i++) {
+				ans[sa[i]] = i + 1;
+			}
+			return ans;
 		}
 
 	}
