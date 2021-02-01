@@ -11,8 +11,6 @@ public class CreateMaximumNumber {
 		int[] res = new int[k];
 		int[][] dp1 = getdp(nums1); // 生成dp1这个表，以后从nums1中，只要固定拿N个数，
 		int[][] dp2 = getdp(nums2);
-		
-		
 		for (int get1 = Math.max(0, k - len2); get1 <= Math.min(k, len1); get1++) {
 			// arr1 挑 get1个，怎么得到一个最优结果
 			int[] pick1 = maxPick(nums1, dp1, get1);
@@ -38,99 +36,6 @@ public class CreateMaximumNumber {
 			j++;
 		}
 		return j == nums2.length || (i < nums1.length && nums1[i] > nums2[j]);
-	}
-
-	public static class Suffix {
-		public int n;
-		public int[] wa;
-		public int[] wb;
-		public int[] wv;
-		public int[] wt;
-		public int[] r;
-		public int[] sa;
-		public int[] ch;
-		public int MAXN;
-
-		// arr[i]认为是一个字符
-		// max arr中的最大值+1 >
-		// 别让arr中有0
-		// arr 中Value最大值
-		// arr 中不能有0这个值
-		public Suffix(int[] arr, int max) {
-			MAXN = max;
-			n = arr.length;
-			init(Math.max(MAXN, n + 3));
-			create(arr);
-		}
-
-		private void init(int N) {
-			wa = new int[N];
-			wb = new int[N];
-			wv = new int[N];
-			wt = new int[N];
-			r = new int[N];
-			sa = new int[N];
-			ch = new int[N];
-		}
-
-		private void create(int[] arr) {
-			for (int i = 0; i < n; i++) {
-				ch[i] = arr[i];
-			}
-			for (int i = 0; i <= n; i++)
-				r[i] = (int) ch[i];
-			DA(r, sa, n + 1, MAXN);
-		}
-
-		private boolean cmp(int[] r, int a, int b, int l) {
-			return r[a] == r[b] && r[a + l] == r[b + l];
-		}
-
-		private void DA(int[] r, int[] sa, int n, int m) {
-			int i, j, p;
-			int[] x = wa;
-			int[] y = wb;
-			int[] t;
-			for (i = 0; i < m; i++)
-				wt[i] = 0;
-			for (i = 0; i < n; i++)
-				wt[x[i] = r[i]]++;
-			for (i = 1; i < m; i++)
-				wt[i] += wt[i - 1];
-			for (i = n - 1; i >= 0; i--)
-				sa[--wt[x[i]]] = i;
-			for (j = 1, p = 1; p < n; j *= 2, m = p) {
-				for (p = 0, i = n - j; i < n; i++)
-					y[p++] = i;
-				for (i = 0; i < n; i++)
-					if (sa[i] >= j)
-						y[p++] = sa[i] - j;
-				for (i = 0; i < n; i++)
-					wv[i] = x[y[i]];
-				for (i = 0; i < m; i++)
-					wt[i] = 0;
-				for (i = 0; i < n; i++)
-					wt[wv[i]]++;
-				for (i = 1; i < m; i++)
-					wt[i] += wt[i - 1];
-				for (i = n - 1; i >= 0; i--)
-					sa[--wt[wv[i]]] = y[i];
-				for (t = x, x = y, y = t, p = 1, x[sa[0]] = 0, i = 1; i < n; i++)
-					x[sa[i]] = cmp(y, sa[i - 1], sa[i], j) ? p - 1 : p++;
-			}
-			for (i = 0; i < n; i++) {
-				sa[i] = sa[i + 1];
-			}
-		}
-
-		public int[] getRank() {
-			int[] ans = new int[n];
-			for (int i = 0; i < n; i++) {
-				ans[sa[i]] = i + 1;
-			}
-			return ans;
-		}
-
 	}
 
 	public static int[] maxNumber2(int[] nums1, int[] nums2, int k) {
@@ -172,8 +77,7 @@ public class CreateMaximumNumber {
 		for (int j = 0; j < size2; j++) {
 			nums[j + size1 + 1] = nums2[j] + 2;
 		}
-		Suffix suffix = new Suffix(nums, 12);
-		int[] rank = suffix.getRank();
+		int[] rank = new DC3().rank(nums, 12);
 		int[] ans = new int[size1 + size2];
 		int i = 0;
 		int j = 0;
@@ -188,6 +92,120 @@ public class CreateMaximumNumber {
 			ans[r++] = nums2[j++];
 		}
 		return ans;
+	}
+
+	public static class DC3 {
+
+		public int[] rank(int[] nums, int max) {
+			int n = nums.length;
+			int[] sa = sa(nums, max);
+			int[] ans = new int[n];
+			for (int i = 0; i < n; i++) {
+				ans[sa[i]] = i + 1;
+			}
+			return ans;
+		}
+
+		public int[] sa(int[] nums, int max) {
+			int n = nums.length;
+			int[] arr = new int[n + 3];
+			for (int i = 0; i < n; i++) {
+				arr[i] = nums[i];
+			}
+			return skew(arr, n, max);
+		}
+
+		private int[] skew(int[] nums, int n, int K) {
+			int n0 = (n + 2) / 3, n1 = (n + 1) / 3, n2 = n / 3, n02 = n0 + n2;
+			int[] s12 = new int[n02 + 3], sa12 = new int[n02 + 3];
+			for (int i = 0, j = 0; i < n + (n0 - n1); ++i) {
+				if (0 != i % 3) {
+					s12[j++] = i;
+				}
+			}
+			radixPass(nums, s12, sa12, 2, n02, K);
+			radixPass(nums, sa12, s12, 1, n02, K);
+			radixPass(nums, s12, sa12, 0, n02, K);
+			int name = 0, c0 = -1, c1 = -1, c2 = -1;
+			for (int i = 0; i < n02; ++i) {
+				if (c0 != nums[sa12[i]] || c1 != nums[sa12[i] + 1] || c2 != nums[sa12[i] + 2]) {
+					name++;
+					c0 = nums[sa12[i]];
+					c1 = nums[sa12[i] + 1];
+					c2 = nums[sa12[i] + 2];
+				}
+				if (1 == sa12[i] % 3) {
+					s12[sa12[i] / 3] = name;
+				} else {
+					s12[sa12[i] / 3 + n0] = name;
+				}
+			}
+			if (name < n02) {
+				sa12 = skew(s12, n02, name);
+				for (int i = 0; i < n02; i++) {
+					s12[sa12[i]] = i + 1;
+				}
+			} else {
+				for (int i = 0; i < n02; i++) {
+					sa12[s12[i] - 1] = i;
+				}
+			}
+			int[] s0 = new int[n0], sa0 = new int[n0];
+			for (int i = 0, j = 0; i < n02; i++) {
+				if (sa12[i] < n0) {
+					s0[j++] = 3 * sa12[i];
+				}
+			}
+			radixPass(nums, s0, sa0, 0, n0, K);
+			int[] sa = new int[n];
+			for (int p = 0, t = n0 - n1, k = 0; k < n; k++) {
+				int i = sa12[t] < n0 ? sa12[t] * 3 + 1 : (sa12[t] - n0) * 3 + 2;
+				int j = sa0[p];
+				if (sa12[t] < n0 ? leq(nums[i], s12[sa12[t] + n0], nums[j], s12[j / 3])
+						: leq(nums[i], nums[i + 1], s12[sa12[t] - n0 + 1], nums[j], nums[j + 1], s12[j / 3 + n0])) {
+					sa[k] = i;
+					t++;
+					if (t == n02) {
+						for (k++; p < n0; p++, k++) {
+							sa[k] = sa0[p];
+						}
+					}
+				} else {
+					sa[k] = j;
+					p++;
+					if (p == n0) {
+						for (k++; t < n02; t++, k++) {
+							sa[k] = sa12[t] < n0 ? sa12[t] * 3 + 1 : (sa12[t] - n0) * 3 + 2;
+						}
+					}
+				}
+			}
+			return sa;
+		}
+
+		private void radixPass(int[] nums, int[] input, int[] output, int offset, int n, int k) {
+			int[] cnt = new int[k + 1];
+			for (int i = 0; i < n; ++i) {
+				cnt[nums[input[i] + offset]]++;
+			}
+			for (int i = 0, sum = 0; i < cnt.length; ++i) {
+				int t = cnt[i];
+				cnt[i] = sum;
+				sum += t;
+			}
+			for (int i = 0; i < n; ++i) {
+				output[cnt[nums[input[i] + offset]]++] = input[i];
+			}
+		}
+
+		private boolean leq(int a1, int a2, int b1, int b2) {
+			return a1 < b1 || (a1 == b1 && a2 <= b2);
+		}
+
+		private boolean leq(int a1, int a2, int a3, int b1, int b2, int b3) {
+			return a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3));
+		}
+
 	}
 
 	public static int[][] getdp(int[] arr) {
