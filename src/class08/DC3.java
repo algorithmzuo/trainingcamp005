@@ -8,7 +8,7 @@ public class DC3 {
 
 	public DC3(int[] nums, int max) {
 		sa = sa(nums, max);
-		rank = saToRank();
+		rank = rank();
 	}
 
 	private int[] sa(int[] nums, int max) {
@@ -111,7 +111,7 @@ public class DC3 {
 		return a1 < b1 || (a1 == b1 && leq(a2, a3, b2, b3));
 	}
 
-	private int[] saToRank() {
+	private int[] rank() {
 		int n = sa.length;
 		int[] ans = new int[n];
 		for (int i = 0; i < n; i++) {
