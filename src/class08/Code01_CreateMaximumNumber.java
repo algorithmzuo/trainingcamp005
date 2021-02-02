@@ -1,5 +1,6 @@
 package class08;
 
+// 测试链接 : https://leetcode.com/problems/create-maximum-number/
 public class Code01_CreateMaximumNumber {
 
 	public static int[] maxNumber1(int[] nums1, int[] nums2, int k) {
@@ -244,47 +245,4 @@ public class Code01_CreateMaximumNumber {
 		return res;
 	}
 
-	// for test
-	public static void printArray(int[] arr) {
-		for (int i = 0; i < arr.length; i++) {
-			System.out.print(arr[i] + " ");
-		}
-		System.out.println();
-	}
-
-	public static int[] generateArray(int len, int varible) {
-		int[] arr = new int[(int) (Math.random() * len) + 1];
-		for (int i = 0; i < arr.length; i++) {
-			arr[i] = (int) (Math.random() * varible);
-		}
-		return arr;
-	}
-
-	public static boolean isEqual(int[] arr1, int[] arr2) {
-		for (int i = 0; i < arr1.length; i++) {
-			if (arr1[i] != arr2[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public static void main(String[] args) {
-		int len = 100;
-		int varible = 9;
-		for (int i = 0; i < 10000; i++) {
-			int[] nums1 = generateArray(len, varible);
-			int[] nums2 = generateArray(len, varible);
-			int k = (int) (Math.random() * (nums1.length + nums2.length)) + 1;
-			int[] ans1 = maxNumber1(nums1, nums2, k);
-			int[] ans2 = maxNumber2(nums1, nums2, k);
-			if (!isEqual(ans1, ans2)) {
-				printArray(nums1);
-				printArray(nums2);
-				printArray(ans1);
-				printArray(ans2);
-				break;
-			}
-		}
-	}
 }
