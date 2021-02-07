@@ -256,9 +256,9 @@ public class Code01_TSP {
 	}
 
 	public static void main(String[] args) {
-		int len = 9;
+		int len = 10;
 		int value = 100;
-		System.out.println("test begin");
+		System.out.println("功能测试开始");
 		for (int i = 0; i < 20000; i++) {
 			int[][] matrix = generateGraph(len, value);
 			int origin = (int) (Math.random() * matrix.length);
@@ -268,12 +268,28 @@ public class Code01_TSP {
 			if (ans1 != ans2 || ans1 != ans3) {
 				System.out.println("fuck");
 			}
-//			System.out.println(ans1);
-//			System.out.println(ans2);
-//			System.out.println(ans3);
-//			System.out.println("=========");
 		}
-		System.out.println("test finished!");
+		System.out.println("功能测试结束");
+
+		len = 22;
+		System.out.println("性能测试开始，数据规模 : " + len);
+		int[][] matrix = new int[len][len];
+		for (int i = 0; i < len; i++) {
+			for (int j = 0; j < len; j++) {
+				matrix[i][j] = (int) (Math.random() * value) + 1;
+			}
+		}
+		for (int i = 0; i < len; i++) {
+			matrix[i][i] = 0;
+		}
+		long start;
+		long end;
+		start = System.currentTimeMillis();
+		t4(matrix);
+		end = System.currentTimeMillis();
+		System.out.println("运行时间 : " + (end - start) + " 毫秒");
+		System.out.println("性能测试结束");
+
 	}
 
 }
